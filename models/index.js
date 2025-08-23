@@ -44,6 +44,31 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
+// 🔹 Associations
+db.User.hasMany(db.Address, { foreignKey: "user_id" });
+db.Address.belongsTo(db.User, { foreignKey: "user_id" });
+
+db.Category.hasMany(db.Product, { foreignKey: "category_id" });
+db.Product.belongsTo(db.Category, { foreignKey: "category_id" });
+
+db.Product.hasMany(db.ProductImage, { foreignKey: "product_id" });
+db.ProductImage.belongsTo(db.Product, { foreignKey: "product_id" });
+
+db.User.hasMany(db.Order, { foreignKey: "user_id" });
+db.Order.belongsTo(db.User, { foreignKey: "user_id" });
+
+db.Order.hasMany(db.OrderItem, { foreignKey: "order_id" });
+db.OrderItem.belongsTo(db.Order, { foreignKey: "order_id" });
+
+db.OrderItem.belongsTo(db.Product, { foreignKey: "product_id" });
+db.Product.hasMany(db.OrderItem, { foreignKey: "product_id" });
+
+db.User.hasMany(db.Cart, { foreignKey: "user_id" });
+db.Cart.belongsTo(db.User, { foreignKey: "user_id" });
+
+db.Product.hasMany(db.Cart, { foreignKey: "product_id" });
+db.Cart.belongsTo(db.Product, { foreignKey: "product_id" });
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
