@@ -1,23 +1,27 @@
 const express = require("express");
-const { Sequelize } = require("sequelize");
-require("dotenv").config();
 const app = express();
 const port = 3000;
+const { sequelize } = require("./models"); // Import from models/index.js
 
 app.use(express.json());
 
+const userRoutes = require("./routes/users");
+const productRoutes = require("./routes/products");
+const orderRoutes = require("./routes/orders");
+const cartRoutes = require("./routes/carts");
+const categoryRoutes = require("./routes/categories");
+const addressRoutes = require("./routes/addresses");
+const orderItemRoutes = require("./routes/orderItems");
+const productImageRoutes = require("./routes/productImages");
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    dialect: "postgres",
-    logging: false,
-  }
-);
+app.use("/users", userRoutes);
+app.use("/products", productRoutes);
+app.use("/orders", orderRoutes);
+app.use("/carts", cartRoutes);
+app.use("/categories", categoryRoutes);
+app.use("/addresses", addressRoutes);
+app.use("/orderItems", orderItemRoutes);
+app.use("/productImages", productImageRoutes);
 
 app.get("/", (req, res) => {
   res.send("E-Commerce Backend is running!");
@@ -25,8 +29,8 @@ app.get("/", (req, res) => {
 
 sequelize
   .authenticate()
-  .then(() => console.log("Database connected successfully"))
-  .catch((err) => console.error("Unable to connect to the database:", err));
+  .then(() => console.log("Database connected"))
+  .catch((err) => console.log("Error: " + err));
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

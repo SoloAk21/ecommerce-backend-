@@ -1,25 +1,38 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Address extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      Address.belongsTo(models.User, { foreignKey: "user_id" });
     }
   }
-  Address.init({
-    id: DataTypes.INTEGER,
-    name: DataTypes.TEXT,
-    user_id: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'Address',
-  });
+  Address.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true, // Explicitly mark id as primary key
+        autoIncrement: true, // Auto-increment for unique IDs
+        allowNull: false,
+      },
+      name: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: "Address",
+      tableName: "Addresses",
+    }
+  );
   return Address;
 };
